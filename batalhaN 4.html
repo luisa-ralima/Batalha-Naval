@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>batalha naval - teste 4</title>
+    <style>
+        body{
+        display: flex;
+        position: relative;
+
+    }
+    table{
+        position: absolute;
+        left: 29%;
+        border: 1.5px blue solid;
+        margin-top: 5%;
+        border-collapse: collapse;
+
+
+    }
+    .table th,td,tr{
+        border: 1.5px blue solid;
+        margin-top: 10%;
+        width:3.6vw;
+        height: 6.5vh;
+    }
+    .titulo{
+        position: absolute;
+        left: 25%;
+        height:5vh;
+        width: 50%;
+        color: rgb(0, 0, 0);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top:5vh;
+        background-color: rgb(135, 167, 222);
+        }
+
+    img{
+        width:3.6vw;
+        height: 6.5vh;
+        padding: 0;
+    }
+    </style>
+</head>
+<body>
+
+    <div class="titulo">
+        <p>Batalha Naval</p>
+        </div>
+    <div>
+    <table id="quad">
+        <tr>
+            <td></td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>5</td>
+            <td>6</td>
+            <td>7</td>
+            <td>8</td>
+            <td>9</td>
+            <td>10</td>
+            </tr>
+            <!-- Cria as células -->
+
+    <script>
+
+        var letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+        var defaultImageURL = 'Fire-icon.png'; // Imagem padrão
+        var waveImageURL = 'Wave.png'; // Imagem das ondas
+
+       var placedShips = []; // Array para armazenar as células onde os navios foram colocados
+
+       function getRandomShipType(row, col) {
+         var cellId = row + '-' + col;
+        
+         // Verifica se a célula já possui um navio
+         if (placedShips.indexOf(cellId) !== -1) {
+           return defaultImageURL; // Retorna a imagem padrão
+         }
+
+         var randomNum = Math.random(); // Gera um número aleatório entre 0 e 1
+
+         // Define a probabilidade de selecionar a imagem "Wave.png"
+         if (randomNum < 0.6) {
+           return waveImageURL;
+         }
+
+         // Adiciona a célula aos navios colocados
+         placedShips.push(cellId);
+
+         // Retorna um tipo de navio aleatório
+         var shipTypes = ['Ship-1.png', 'Ship-2.png', 'Ship-3.png'];
+         var randomIndex = Math.floor(Math.random() * shipTypes.length);
+         return shipTypes[randomIndex];
+       }
+        
+       function changeImage(element) {
+         var imageURL = element.getAttribute('data-image'); // Obtém o caminho da imagem atual
+
+         if (imageURL === defaultImageURL) {
+           var row = element.parentElement.firstChild.innerText; // Obtém a letra da linha
+           var col = element.cellIndex + 1; // Obtém o número da coluna
+
+           var shipType = getRandomShipType(row, col);
+
+           if (shipType !== waveImageURL) { // Verifica se não é uma imagem "Wave.png"
+            element.setAttribute('data-image', shipType);
+            element.innerHTML = '<img src="' + shipType + '" style="width: 50px; height: 50px;">';    
+        }else {
+             element.setAttribute('data-image', waveImageURL);
+             element.innerHTML = '<img src="' + waveImageURL + '" style="width: 50px; height: 50px;">';                }
+        }
+    }
+
+           // Obtém a referência da tabela
+        var tabela = document.getElementById("quad");
+
+        // Cria as linhas e células da tabela
+        for (var i = 0; i < 10; i++) {
+            var linha = document.createElement('tr');
+            linha.innerHTML = '<td>' + letters[i] + '</td>'; // Insere a letra da linha
+            
+            for (var j = 0; j < 10; j++) {
+                var celula = document.createElement('td');
+                //var imagem = document.createElement ('img')= coloca uma tag ("img") dentro de uma variável
+                //imagem.src = 'Fire-icon.png' = nome da imagem
+                celula.setAttribute('data-image', defaultImageURL);
+                celula.innerHTML = '<img src="' + defaultImageURL + '" style="width: 50px; height: 50px;">';
+                celula.addEventListener('click', function () {
+             changeImage(this);
+            });
+
+                //celula.appendChild(imagem)= coloca uma variável (imagem) dentro de outra (celula)
+                linha.appendChild(celula);//coloca uma variável (celula) dentro de outra (linha)
+            }
+            tabela.appendChild(linha);
+           
+        }
+    </script>
+    </table>
+</div>
+</body>
+</html>
